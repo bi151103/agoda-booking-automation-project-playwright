@@ -4,11 +4,12 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cross-env TZ=Asia/Ho_Chi_Minh npx playwright test"
   },
   "devDependencies": {
     "@playwright/test": "^1.49.0",
     "@types/node": "^22.10.1",
+    "cross-env": "^10.1.0",
     "dotenv": "^16.4.6",
     "typescript": "^5.9.3"
   }
