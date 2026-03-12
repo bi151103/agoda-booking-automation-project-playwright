@@ -27,8 +27,11 @@ export default defineConfig(
       actionTimeout: 0,//default none
       navigationTimeout: 0,// default none
       baseURL: process.env.BASE_URL,
-      trace: 'on-first-retry',
-      serviceWorkers: 'block'//for data intercepting
+      trace: process.env.CI ? 'on-first-retry' : 'off',
+      serviceWorkers: 'block',//for data intercepting
+      locale: 'en-US',
+      timezoneId: 'Asia/Ho_Chi_Minh',
+      geolocation: { longitude: 106.660172, latitude: 10.762622 },
     },
 
     //project-specific config
