@@ -77,10 +77,7 @@ export default class HomePage extends BasePage {
     }
 
     async selectNumberOfRoomsInOccupancyDialog(numberOfRooms: number): Promise<void> {
-        try {
-            await this.occupancyDialogEle().waitFor({ state: "visible", timeout: 1000 });
-        }
-        catch (e) {
+        if (!await this.occupancyDialogEle().isVisible()) {
             await this._page.locator("#occupancy-box").click();
         }
         const currentNumberOfRooms = parseInt(await this.numberOfRoomsInOccupancyDialogEle().textContent() as unknown as string);
@@ -110,10 +107,7 @@ export default class HomePage extends BasePage {
     }
 
     async selectNumberOfAdultsInOccupationDialog(numberOfAdults: number): Promise<void> {
-        try {
-            await this.occupancyDialogEle().waitFor({ state: "visible", timeout: 1000 });
-        }
-        catch (e) {
+        if (!await this.occupancyDialogEle().isVisible()) {
             await this._page.locator("#occupancy-box").click();
         }
         const currentNumberOfAdults = parseInt(await this.numberOfAdultsInOccupancyDialogEle().textContent() as unknown as string);
@@ -143,10 +137,7 @@ export default class HomePage extends BasePage {
     }
 
     async selectNumberOfChildrenInOccupationDialog(numberOfChildren: number): Promise<void> {
-        try {
-            await this.occupancyDialogEle().waitFor({ state: "visible", timeout: 1000 });
-        }
-        catch (e) {
+        if (!await this.occupancyDialogEle().isVisible()) {
             await this._page.locator("#occupancy-box").click();
         }
         const currentNumberOfChildren = parseInt(await this.numberOfChildrenInOccupancyDialogEle().textContent() as unknown as string);
