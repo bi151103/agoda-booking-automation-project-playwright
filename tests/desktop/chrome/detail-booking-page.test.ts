@@ -1,4 +1,5 @@
 import { test, expect } from '@fixtures';
+import HotelPropertyDetailPage from '@pages/hotelPropertyDetailPage';
 import { type Page } from '@playwright/test';
 import { getDayAfterXDays, getCustomDateFormatWithShortMonthAfterXDays, getDayOfWeekAfterXDays, getMonthNameAfterXDays } from "@shared/utils";
 
@@ -78,7 +79,9 @@ test.describe("Hotel booking detail page", () => {
             
             await test.step("Check the price of the selected in the hotel detail page opening in a new tab", async () => {
                 const newPage = await pagePromise;
-                await expect(newPage.locator("#hotelNavBar").locator('.StickyNavPrice__priceDetail')).toHaveText(/₫\s?[\d,]+/);
+                const hotelPropertyDetailPage = new HotelPropertyDetailPage(newPage);
+                await expect(hotelPropertyDetailPage.displayedPriceEle()).toBeVisible();
+                await expect(hotelPropertyDetailPage.displayedPriceEle()).toHaveText(/₫\s?[\d,]+/);
             });
         }
     )
