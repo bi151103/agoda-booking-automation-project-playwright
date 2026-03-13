@@ -176,7 +176,9 @@ export default class HomePage extends BasePage {
     }
 
     async closeOccupancyDialog(): Promise<void> {
-        await this._page.locator("#occupancy-box").click();
+        if (await this.occupancyDialogEle().isVisible()) {
+            await this._page.locator("#occupancy-box").click();
+        }
     }
 
     async submitTheFilter(): Promise<void> {
