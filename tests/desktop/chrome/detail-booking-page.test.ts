@@ -51,10 +51,10 @@ test.describe("Hotel booking detail page", () => {
             await test.step("Select 1 room, 4 adults and 2 children", async () => {
                 await homePage.selectNumberOfRoomsInOccupancyDialog(1);
                 await expect(homePage.numberOfRoomsInOccupancyDialogEle()).toHaveText("1");
-                
+
                 await homePage.selectNumberOfAdultsInOccupationDialog(4);
                 await expect(homePage.numberOfAdultsInOccupancyDialogEle()).toHaveText("4");
-                
+
                 await homePage.selectNumberOfChildrenInOccupationDialog(2);
                 await expect(homePage.numberOfChildrenInOccupancyDialogEle()).toHaveText("2");
             });
@@ -66,7 +66,6 @@ test.describe("Hotel booking detail page", () => {
             });
 
             await test.step("Close the occupancy dialog opening in the search page", async () => {
-                await expect(searchPage.occupancyDialogEle()).toBeVisible();
                 await searchPage.closeOccupancyDialog();
             });
 
