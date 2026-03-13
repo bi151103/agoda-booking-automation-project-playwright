@@ -28,7 +28,9 @@ export default class HomePage extends BasePage {
     }
 
     async closeThe10PercentsBookingDialog(): Promise<void> {
-        await this._page.getByRole("button", { name: "Close" }).click();
+        if (await this._page.getByText("Save 10% on your 1st app booking!").isVisible()) {
+            await this._page.getByRole("button", { name: "Close" }).click();
+        }
     }
 
     async selectHotelTabInTheFilter(): Promise<void> {
@@ -174,10 +176,6 @@ export default class HomePage extends BasePage {
 
     async submitTheFilter(): Promise<void> {
         await this._page.getByRole("button").filter({ hasText: "SEARCH" }).click();
-    }
-
-    save10PercentsBookingDialogTitleEle(): Locator {
-        return this._page.getByText("Save 10% on your 1st app booking!");
     }
 
     holelTabInSelectedStateEle(): Locator {

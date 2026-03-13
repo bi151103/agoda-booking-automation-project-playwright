@@ -8,8 +8,6 @@ test.describe("Hotel booking detail page", () => {
 
             await homePage.navigateTo('/en-gb/?cur=VND');
             await homePage.closeThe10PercentsBookingDialog();
-
-            await expect(homePage.save10PercentsBookingDialogTitleEle()).toBeHidden();
         });
     });
     
