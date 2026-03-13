@@ -3,7 +3,7 @@ import { type Page } from '@playwright/test';
 import { getDayAfterXDays, getCustomDateFormatWithShortMonthAfterXDays, getDayOfWeekAfterXDays, getMonthNameAfterXDays } from "@shared/utils";
 
 test.describe("Hotel booking detail page", () => {
-    test.beforeEach(async ({ homePage, page }) => {
+    test.beforeEach(async ({ homePage }) => {
         await test.step("Access the agoda.com site with the language is english and the currency is VND", async () => {
 
             await homePage.navigateTo('/en-gb/?cur=VND');
@@ -14,7 +14,7 @@ test.describe("Hotel booking detail page", () => {
     });
     
     test("should show hotel detail with a correct price displayed after clicking on the first result from the properties list",
-        async ({ homePage, page }) => {
+        async ({ homePage, page, searchPage }) => {
             await test.step("Choose the option 'Hotel' and 'Overnight Stays' in the filter", async () => {
                 await homePage.selectHotelTabInTheFilter();
                 await expect(homePage.holelTabInSelectedStateEle()).toBeVisible();
@@ -67,27 +67,21 @@ test.describe("Hotel booking detail page", () => {
             });
 
             await test.step("Close the occupancy dialog opening in the search page", async () => {
-                await expect(page.getByRole("dialog", { name: "Occupancy selection" })).toBeVisible();
-                await page.locator("#occupancy-box").click();
+                await expect(searchPage.occupancyDialogEle()).toBeVisible();
+                await searchPage.closeOccupancyDialog();
             });
 
-            try {
-                let pagePromise: Promise<Page>;
-                await test.step("Select the first option from the properties list", async () => {
-                    pagePromise = page.waitForEvent("popup");
-                    await expect(page.locator("ol.hotel-list-container li.PropertyCard.PropertyCardItem").first()).toBeVisible();
+            let pagePromise: Promise<Page>;
+            await test.step("Select the first option from the properties list", async () => {
+                pagePromise = page.waitForEvent("popup");
 
-                    await page.locator("ol.hotel-list-container li.PropertyCard.PropertyCardItem").first().locator("a[target='_blank']").click();
-                });
-                
-                await test.step("Check the price of the selected in the hotel detail page opening in a new tab", async () => {
-                    const newPage = await pagePromise;
-                    await expect(newPage.locator("#hotelNavBar").locator('.StickyNavPrice__priceDetail')).toHaveText(/₫\s?[\d,]+/);
-                });
-            }
-            catch (e) {
-                console.error("Fail to verify the price of an item in the detail page as there is no item to select in the properties list");
-            }
+                await searchPage.selectPropertyFromThePropertiesList(0);
+            });
+            
+            await test.step("Check the price of the selected in the hotel detail page opening in a new tab", async () => {
+                const newPage = await pagePromise;
+                await expect(newPage.locator("#hotelNavBar").locator('.StickyNavPrice__priceDetail')).toHaveText(/₫\s?[\d,]+/);
+            });
         }
     )
 });
