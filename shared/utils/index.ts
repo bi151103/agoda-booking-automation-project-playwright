@@ -6,14 +6,14 @@ export function getMonthNameAfterXDays(daysToAdd: number): string {
   return futureDate.toLocaleString('en-US', { month: 'long' });
 }
 
-export function addXDays(daysToAdd: number): string {
+export function getDayAfterXDays(daysToAdd: number): string {
   const date = new Date();
   date.setDate(date.getDate() + daysToAdd);
   
   return date.toDateString();
 }
 
-export function getCustomDateFormatWithShortMonth(daysToAdd: number): string {
+export function getCustomDateFormatWithShortMonthAfterXDays(daysToAdd: number): string {
   const date = new Date();
   date.setDate(date.getDate() + daysToAdd);
 
