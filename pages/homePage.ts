@@ -17,10 +17,16 @@ export default class HomePage extends BasePage {
         return this._headerPage;
     }
 
+    /**
+     * Navigates to the specified path on the Agoda homepage.
+     * Repeatedly checks if the main page content is visible; if not (e.g., page fails to load and shows only header and footer),
+     * clicks the Agoda logo to reload the page until the content loads successfully.
+     * @param path The path to navigate to. Defaults to an empty string if not provided.
+     */
     async navigateTo(path?: string): Promise<void> {
         await this._page.goto(path ?? '');
 
-        //add a loop to check if the 'Save 10% on your 1st app booking!' dialog is shown or the page fails to load the content and shows only header and footer
+        //add a loop to check if the content of the page is shown or the page fails to load the content and shows only header and footer
             //if the page fails to load the content, reload the page by clicking on the Agoda logo
         while(!await this._page.locator("#home-react-root #HomeReactContainer").isVisible()) {
             this.headerPage().clickOnLogo();
@@ -51,6 +57,9 @@ export default class HomePage extends BasePage {
         await destinationAndPropertyInputEle.pressSequentially(input, { delay: 100 });
     }
 
+    /**
+     * Closes the destination search dialog if it is visible by clicking outside the input field.
+     */
     async closeTheDestionationSearchDialog(): Promise<void> {
         if (await this._page.locator("#search-box-autocomplete-id").isVisible()) {
             const destinationAndPropertyInputEle = this.destinationAndPropertyInputEle();
@@ -64,13 +73,25 @@ export default class HomePage extends BasePage {
         }
     }
 
-    async selectCheckInDate(monthToSelect: string, dayToSelect: string = "1"): Promise<void> {
+    /**
+     * Selects the check-in date in the date picker dialog.
+     * Opens the check-in date picker if it is not visible and expanded, then selects the specified day in the given month.
+     * @param monthToSelect The month to select the date from (e.g., "January").
+     * @param dayToSelect The day of the month to select (e.g., "15").
+     */
+    async selectCheckInDate(monthToSelect: string, dayToSelect: string): Promise<void> {
         if (!(await this.checkInDatePickerDialogEle().isVisible() && await this.checkInDateInputInExpandedStateEle().isVisible())) {
             await this.checkInDateInputEle().click();
         }
         await this._page.locator(".DayPicker-Month").filter({ hasText: monthToSelect }).getByRole("button", { name: dayToSelect }).click();
     }
     
+    /**
+     * Selects the check-out date in the date picker dialog.
+     * Opens the check-out date picker if it is not visible and expanded, then selects the specified day in the given month.
+     * @param monthToSelect The month to select the date from (e.g., "January").
+     * @param dayToSelect The day of the month to select (e.g., "15").
+     */
     async selectCheckOutDate(monthToSelect: string, dayToSelect: string): Promise<void> {
         if (!(await this.checkOutDatePickerDialogEle().isVisible() && await this.checkOutDateInputInExpandedStateEle().isVisible())) {
             await this.checkOutDateInputEle().click();
@@ -78,6 +99,12 @@ export default class HomePage extends BasePage {
         await this._page.locator(".DayPicker-Month").filter({ hasText: monthToSelect }).getByRole("button", { name: dayToSelect }).click();
     }
 
+    /**
+     * Selects the specified number of rooms in the occupancy dialog.
+     * Opens the occupancy dialog if it is not visible, retrieves the current number of rooms,
+     * and adjusts it by clicking the add or subtract buttons as needed to match the desired number.
+     * @param numberOfRooms The number of rooms to select.
+     */
     async selectNumberOfRoomsInOccupancyDialog(numberOfRooms: number): Promise<void> {
         if (!await this.occupancyDialogEle().isVisible()) {
             await this._page.locator("#occupancy-box").click();
@@ -108,6 +135,12 @@ export default class HomePage extends BasePage {
         }
     }
 
+    /**
+     * Selects the specified number of adults in the occupancy dialog.
+     * Opens the occupancy dialog if it is not visible, retrieves the current number of adults,
+     * and adjusts it by clicking the add or subtract buttons as needed to match the desired number.
+     * @param numberOfAdults The number of adults to select.
+     */
     async selectNumberOfAdultsInOccupationDialog(numberOfAdults: number): Promise<void> {
         if (!await this.occupancyDialogEle().isVisible()) {
             await this._page.locator("#occupancy-box").click();
@@ -138,6 +171,12 @@ export default class HomePage extends BasePage {
         }
     }
 
+    /**
+     * Selects the specified number of children in the occupancy dialog.
+     * Opens the occupancy dialog if it is not visible, retrieves the current number of children,
+     * and adjusts it by clicking the add or subtract buttons as needed to match the desired number.
+     * @param numberOfChildren The number of children to select.
+     */
     async selectNumberOfChildrenInOccupationDialog(numberOfChildren: number): Promise<void> {
         if (!await this.occupancyDialogEle().isVisible()) {
             await this._page.locator("#occupancy-box").click();
